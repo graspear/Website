@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company - Corporate Website Template</title>
+
+    <!-- Google Fonts - Inter for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Boxicons for general icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Bootstrap Icons for services section -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for specific elements not easily achievable with Tailwind utilities alone */
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations/transforms */
+        }
+
+        /* Header Specific Styles */
+        #header.sticky {
+            @apply shadow-lg;
+        }
+
+        /* Navigation Dropdown Styles */
+        .dropdown-menu, .deep-dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000; /* Ensure dropdown is above other content */
+            @apply rounded-md py-2;
+        }
+
+        .dropdown:hover .dropdown-menu,
+        .deep-dropdown:hover .deep-dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a, .deep-dropdown-menu li a {
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            @apply hover:bg-gray-100;
+        }
+
+        .deep-dropdown-menu {
+            left: 100%;
+            top: 0;
+            margin-left: 10px;
+        }
+
+        /* Hero Section Custom BG */
+        #hero .hero-section {
+            background: url("hero-carousel-1.png") center center;
+        }
+        .hero-content{
+            padding-top: 400px;
+            
+        }
+       
+
+        /* Services Section Icon Wrapper Background Colors */
+        .icon-color-blue { color: #1e88e5; } /* A shade of blue for activity icon */
+        .icon-color-orange { color: #fb8c00; } /* A shade of orange for wifi icon */
+        .icon-color-green { color: #43a047; } /* A shade of green for easel icon */
+        .icon-color-red { color: #e53935; } /* A shade of red for bounding-box icon */
+        .icon-color-purple { color: #8e24aa; } /* A shade of purple for calendar icon */
+        .icon-color-pink { color: #d81b60; } /* A shade of pink for chat-dots icon */
+
+        .icon-wrapper.bg-blue-100 { background-color: #e0f2f7; }
+        .icon-wrapper.bg-orange-100 { background-color: #fce8e6; }
+        .icon-wrapper.bg-green-100 { background-color: #e6f7ed; }
+        .icon-wrapper.bg-red-100 { background-color: #fae6ec; }
+        .icon-wrapper.bg-purple-100 { background-color: #eeebf9; }
+        .icon-wrapper.bg-pink-100 { background-color: #fdf3e8; }
+
+
+        /* Portfolio Item Overlay */
+        .portfolio-info {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            background: rgba(0, 0, 0, 0.7);
+            @apply absolute inset-0 flex flex-col items-center justify-center text-white;
+        }
+
+        .portfolio-item:hover .portfolio-info {
+            opacity: 1;
+        }
+        
+      .clients-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .section-title{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-style: dark bold;
+        }
+        .section-description{
+            margin-top: 10px;
+        }
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 60px;
+        }
+        .client-item {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        .client-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 998;
+        }
+
+        .mobile-nav-active .mobile-nav-overlay {
+            display: block;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -300px; /* Hidden off-screen */
+            width: 280px;
+            height: 100%;
+            background: white;
+            z-index: 999;
+            padding: 20px 0;
+            transition: right 0.3s ease-in-out;
+            @apply shadow-lg;
+        }
+
+        .mobile-nav-active .mobile-nav {
+            right: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li a {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            @apply hover:bg-gray-100 transition-colors;
+        }
+
+        .mobile-nav ul .dropdown > a,
+        .mobile-nav ul .deep-dropdown > a {
+            position: relative;
+        }
+
+        .mobile-nav ul .dropdown-toggle::after {
+            content: "\f282"; /* Bootstrap icon for caret-down */
+            font-family: "bootstrap-icons";
+            float: right;
+            margin-top: 2px;
+            transition: transform 0.3s ease;
+        }
+        .mobile-nav ul .dropdown-active .dropdown-toggle::after {
+            transform: rotate(-180deg);
+        }
+
+        .mobile-nav ul .dropdown-menu,
+        .mobile-nav ul .deep-dropdown-menu {
+            position: relative;
+            box-shadow: none;
+            background: none;
+            width: auto;
+            padding-left: 20px;
+        }
+
+        .mobile-nav-toggle {
+            display: none; /* Hide on desktop */
+            @apply text-3xl cursor-pointer text-gray-700;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav on mobile */
+            }
+            .mobile-nav-toggle {
+                display: block; /* Show toggle on mobile */
+            }
+            #header .container {
+                @apply flex justify-between items-center;
+            }
+        }
+        
+    </style>
+</head>
+<body class="font-inter">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed top-0 w-full z-50 bg-white py-4 px-6 transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="logo text-3xl font-bold text-gray-800">
+                <a href="home.html">COMPANY<span class="text-green-600">.</span></a>
+            </h1>
+
+            <!-- Desktop Navigation -->
+            <nav class="main-nav hidden md:flex items-center space-x-8">
+                <ul class="flex items-center space-x-8">
+                    <li><a href="#" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">HOME</a></li>
+                    <li class="dropdown relative group">
+                        <a href="about.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200 flex items-center">
+                            ABOUT<i class="bx bx-chevron-down ml-1"></i>
+                        </a>
+                        <ul class="dropdown-menu absolute hidden group-hover:block bg-white shadow-md rounded-md py-2 min-w-[160px]">
+                            <li><a href="about-Team.html" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Team</a></li>
+                            <li><a href="about-Testimonials.html" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Testimonials</a></li>
+                            <li class="deep-dropdown relative group">
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-150 flex items-center">
+                                    Deep Dropdown <i class="bx bx-chevron-right ml-1"></i>
+                                </a>
+                                <ul class="deep-dropdown-menu absolute hidden group-hover:block bg-white shadow-md rounded-md py-2 min-w-[160px]">
+                                    <li><a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Deep Dropdown 1</a></li>
+                                    <li><a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Deep Dropdown 2</a></li>
+                                    <li><a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Deep Dropdown 3</a></li>
+                                    <li><a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Deep Dropdown 4</a></li>
+                                    <li><a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 transition-colors duration-150">Deep Dropdown 5</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="Services.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">SERVICES</a></li>
+                    <li><a href="Portfolio.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">PORTFOLIO</a></li>
+                    <li><a href="Pricing.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">PRICING</a></li>
+                    <li><a href="Blog.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">BLOG</a></li>
+                    <li><a href="Contact.html" class="text-gray-600 font-medium hover:text-green-600 transition-colors duration-200">CONTACT</a></li>
+                </ul>
+            </nav>
+
+            <!-- Social Links (Desktop) -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+            </div>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="bx bx-menu mobile-nav-toggle md:hidden" id="mobile-nav-toggle"></i>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <nav class="mobile-nav" id="mobile-nav">
+        <i class="bx bx-x text-3xl cursor-pointer absolute top-4 right-4 text-gray-700" id="mobile-nav-close"></i>
+        <ul class="mt-12">
+            <li><a href="#" class="text-green-600  font-semibold">HOME</a></li>
+            <li class="dropdown">
+                <a href="about.html" class="flex items-center justify-between dropdown-toggle">ABOUT<i class="bx bx-chevron-down"></i></a>
+                <ul class="dropdown-menu hidden">
+                    <li><a href="about-Team.html">Team</a></li>
+                    <li><a href="about-Testimonials.html">Testimonials</a></li>
+                    <li class="deep-dropdown">
+                        <a href="#" class="flex items-center justify-between dropdown-toggle">Deep Dropdown <i class="bx bx-chevron-right"></i></a>
+                        <ul class="deep-dropdown-menu hidden">
+                            <li><a href="#">Deep Dropdown 1</a></li>
+                            <li><a href="#">Deep Dropdown 2</a></li>
+                            <li><a href="#">Deep Dropdown 3</a></li>
+                            <li><a href="#">Deep Dropdown 4</a></li>
+                            <li><a href="#">Deep Dropdown 5</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="Services.html">SERVICES</a></li>
+            <li><a href="Portfolio.html">PORTFOLIO</a></li>
+            <li><a href="Pricing.html">PRICING</a></li>
+            <li><a href="Blog.html">BLOG</a></li>
+            <li><a href="Contact.html">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <main id="main">
+
+        <!-- ======= Hero Section ======= -->
+        <section id="hero" class="relative w-full h-screen flex items-center justify-center text-center overflow-hidden">
+            <div class="hero-section absolute inset-0"></div>
+            <div class="hero-overlay absolute inset-0 bg-black bg-opacity-50"></div>
+            
+            <div class="hero-content relative z-10 max-w-3xl px-4">
+
+                <h1 class="hero-title text-5xl md:text-6xl font-extrabold text-white mb-4 leading-tight animate-fade-in-up">
+                    We are professional
+                </h1>
+                <p class="hero-description text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto animate-fade-in-up delay-200">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+                <button type="button" class="btn hero-button bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in-up delay-400">
+                    Read More
+                </button>
+            </div>
+        </section>
+
+        <!-- ======= About Section ======= -->
+        <section id="about" class="about py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-wrap items-center -mx-4">
+                    <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0">
+                        <img src="about.png" class="img-fluid rounded-lg shadow-lg" alt="About Us Image">
+                    </div>
+                    <div class="w-full md:w-1/2 px-4 md:pl-12 content">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4">Consequatur eius et magnam</h3>
+                        <p class="text-lg font-semibold text-gray-600 mb-4">Our Story</p>
+                        <ul class="list-none p-0 mb-6">
+                            <li class="flex items-start mb-3">
+                                <i class='bx bx-check-double text-green-500 text-xl mr-2 mt-1'></i>
+                                <p class="text-gray-700">Ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+                            </li>
+                            <li class="flex items-start mb-3">
+                                <i class='bx bx-check-double text-green-500 text-xl mr-2 mt-1'></i>
+                                <p class="text-gray-700">Duis aute irure dolor in reprehenderit in voluptate velit</p>
+                            </li>
+                            <li class="flex items-start mb-3">
+                                <i class='bx bx-check-double text-green-500 text-xl mr-2 mt-1'></i>
+                                <p class="text-gray-700">Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda</p>
+                            </li>
+                        </ul>
+                        <p class="text-gray-700">
+                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                            culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Services</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto">
+                        Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Card 1 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-green-100">
+                                    <i class="bi bi-activity text-4xl icon-color-green"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Nesciunt Mete</h5>
+                                <p class="card-text text-gray-600">Provident nihil minus quo consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-orange-100">
+                                    <i class="bi bi-wifi text-4xl icon-color-orange"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Eosle Commodi</h5>
+                                <p class="card-text text-gray-600">Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-green-100">
+                                    <i class="bi bi-easel text-4xl icon-color-green"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Ledo Markt</h5>
+                                <p class="card-text text-gray-600">Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-red-100">
+                                    <i class="bi bi-bounding-box text-4xl icon-color-red"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Asperiores Commodit</h5>
+                                <p class="card-text text-gray-600">Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-purple-100">
+                                    <i class="bi bi-calendar-event text-4xl icon-color-purple"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Velit Doloremque</h5>
+                                <p class="card-text text-gray-600">Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="col">
+                        <div class="card h-full feature-card text-center bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="card-body">
+                                <div class="icon-wrapper mx-auto mb-6 w-24 h-24 flex items-center justify-center rounded-full bg-pink-100">
+                                    <i class="bi bi-chat-dots text-4xl icon-color-pink"></i>
+                                </div>
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-3">Dolori Architecto</h5>
+                                <p class="card-text text-gray-600">Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Portfolio Section ======= -->
+        <section id="portfolio" class="portfolio py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Portfolio</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto">Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                </div>
+
+                <div class="flex justify-center mb-8">
+                    <ul id="portfolio-filters" class="flex flex-wrap justify-center space-x-2 sm:space-x-4 text-sm font-semibold">
+                        <li><button data-filter="*" class="filter-active px-6 py-2 rounded-full border border-green-600 bg-green-600 text-white hover:bg-green-700 transition-colors duration-200 mb-2">All</button></li>
+                        <li><button data-filter=".filter-app" class="px-6 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-green-500 hover:text-white transition-colors duration-200 mb-2">App</button></li>
+                        <li><button data-filter=".filter-card" class="px-6 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-green-500 hover:text-white transition-colors duration-200 mb-2">Card</button></li>
+                        <li><button data-filter=".filter-web" class="px-6 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-green-500 hover:text-white transition-colors duration-200 mb-2">Web</button></li>
+                    </ul>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-container">
+                    <div class="portfolio-item filter-app relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-1.jpg" class="img-fluid w-full h-auto object-cover" alt="App 1">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">App 1</h4>
+                            <p class="text-lg">App</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-card relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-2.jpg" class="img-fluid w-full h-auto object-cover" alt="Card 1">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Card 1</h4>
+                            <p class="text-lg">Card</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-web relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-3.jpg" class="img-fluid w-full h-auto object-cover" alt="Web 1">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Web 1</h4>
+                            <p class="text-lg">Web</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-web relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-4.jpg" class="img-fluid w-full h-auto object-cover" alt="Web 2">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Web 2</h4>
+                            <p class="text-lg">Web</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-card relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-5.jpg" class="img-fluid w-full h-auto object-cover" alt="Card 2">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Card 2</h4>
+                            <p class="text-lg">Card</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-app relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-6.jpg" class="img-fluid w-full h-auto object-cover" alt="App 2">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">App 2</h4>
+                            <p class="text-lg">App</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-web relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-7.jpg" class="img-fluid w-full h-auto object-cover" alt="Web 3">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Web 3</h4>
+                            <p class="text-lg">Web</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-card relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-8.jpg" class="img-fluid w-full h-auto object-cover" alt="Card 3">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">Card 3</h4>
+                            <p class="text-lg">Card</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item filter-app relative overflow-hidden rounded-lg shadow-md">
+                        <img src="masonry-portfolio-9.jpg" class="img-fluid w-full h-auto object-cover" alt="App 3">
+                        <div class="portfolio-info">
+                            <h4 class="text-2xl font-bold mb-1">App 3</h4>
+                            <p class="text-lg">App</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Team Section ======= -->
+        <section id="team" class="team py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Team</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto">Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="col">
+                        <div class="member text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="pic mb-4">
+                                <img src="team-1.jpg" class="img-fluid w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-sm" alt="Walter White">
+                            </div>
+                            <div class="member-info">
+                                <h4 class="text-xl font-bold text-gray-800 mb-1">Walter White</h4>
+                                <span class="text-sm text-gray-500 block mb-3">Chief Executive Officer</span>
+                                <div class="social flex justify-center space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="member text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="pic mb-4">
+                                <img src="team-2.jpg" class="img-fluid w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-sm" alt="William Anderson">
+                            </div>
+                            <div class="member-info">
+                                <h4 class="text-xl font-bold text-gray-800 mb-1">William Anderson</h4>
+                                <span class="text-sm text-gray-500 block mb-3">CTO</span>
+                                <div class="social flex justify-center space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="member text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="pic mb-4">
+                                <img src="team-3.jpg" class="img-fluid w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-sm" alt="Amanda Jespon">
+                            </div>
+                            <div class="member-info">
+                                <h4 class="text-xl font-bold text-gray-800 mb-1">Amanda Jespon</h4>
+                                <span class="text-sm text-gray-500 block mb-3">Accountant</span>
+                                <div class="social flex justify-center space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="member text-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                            <div class="pic mb-4">
+                                <img src="team-4.jpg" class="img-fluid w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-sm" alt="Sarah Jhonson">
+                            </div>
+                            <div class="member-info">
+                                <h4 class="text-xl font-bold text-gray-800 mb-1">Sarah Jhonson</h4>
+                                <span class="text-sm text-gray-500 block mb-3">Product Manager</span>
+                                <div class="social flex justify-center space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="clients-section">
+        <div class="section-title">
+            <h2>CLIENTS</h2>
+            <div class="divider"></div>
+        </div>
+        <p class="section-description">
+            Necessitativus elus consequatur ex aliquid fuga eum quidem sint consectetur velit
+        </p>
+        <div class="clients-grid">
+            <div class="client-item">
+                <img src="client-1.png" alt="Client 1 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-2.png" alt="Client 2 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-3.png" alt="Client 3 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-4.png" alt="Client 4 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-5.png" alt="Client 5 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-6.png" alt="Client 6 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-7.png" alt="Client 7 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+            <div class="client-item">
+                <img src="client-8.png" alt="Client 8 Logo" height="50px" width="120px">
+                <span class="client-name"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="bg-gray-800 text-gray-300 py-12">
+        <div class="footer-top container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="col col-contact">
+                    <div class="footer-contact">
+                        <h3 class="text-2xl font-bold text-white mb-4">Company</h3>
+                        <p class="text-gray-400">
+                            A108 Adam Street <br>
+                            New York, NY 535022<br>
+                            United States <br><br>
+                            <strong>Phone:</strong> +1 5589 55488 55<br>
+                            <strong>Email:</strong> info@example.com<br>
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-links">
+                    <h4 class="text-xl font-bold text-white mb-4">Useful Links</h4>
+                    <ul class="list-none p-0 space-y-2">
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Home</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Home</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">About us</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Services</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Terms of service</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Privacy policy</a></li>
+                    </ul>
+                </div>
+                <div class="col col-links">
+                    <h4 class="text-xl font-bold text-white mb-4">Our Services</h4>
+                    <ul class="list-none p-0 space-y-2">
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Web Design</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Web Development</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Product Management</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Marketing</a></li>
+                        <li><i class='bx bx-chevron-right text-green-500 mr-2'></i> <a href="#" class="hover:text-green-400 transition-colors">Graphic Design</a></li>
+                    </ul>
+                </div>
+                <div class="col col-newsletter">
+                    <h4 class="text-xl font-bold text-white mb-4">Join Our Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+                    <form action="" method="post" class="newsletter-form flex">
+                        <input type="email" name="email" class="flex-grow px-4 py-2 rounded-l-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-700 text-white" placeholder="Your Email">
+                        <input type="submit" value="Subscribe" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-r-md cursor-pointer transition-colors">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 mt-8 pt-8 border-t border-gray-700">
+            <div class="copyright-wrap flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div class="copyright mb-4 md:mb-0 text-gray-400">
+                    &copy; Copyright <strong><span class="text-white">Company</span></strong>. All Rights Reserved
+                </div>
+                <div class="credits text-gray-400 mb-4 md:mb-0">
+                    Designed by <a href="#" class="text-green-400 hover:underline">Madhavan</a>
+                </div>
+                <div class="social-links flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-twitter text-xl'></i></a>
+                    <a href="#" class="text-gray-400 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-facebook text-xl'></i></a>
+                    <a href="#" class="text-gray-400 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-instagram text-xl'></i></a>
+                    <a href="#" class="text-gray-400 hover:text-green-600 transition-colors duration-200"><i class='bx bxl-linkedin text-xl'></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" id="back-to-top" class="back-to-top fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-opacity duration-300 opacity-0 invisible z-40">
+        <i class='bx bx-up-arrow-alt text-2xl'></i>
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('header');
+            const backToTopButton = document.getElementById('back-to-top');
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileNavClose = document.getElementById('mobile-nav-close');
+            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+            const portfolioFilters = document.getElementById('portfolio-filters');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+            // --- Sticky Header ---
+            const toggleStickyHeader = () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('sticky');
+                } else {
+                    header.classList.remove('sticky');
+                }
+            };
+            window.addEventListener('scroll', toggleStickyHeader);
+            toggleStickyHeader(); // Call on load in case page is already scrolled
+
+            // --- Back to Top Button ---
+            const toggleBackToTop = () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.remove('opacity-0', 'invisible');
+                    backToTopButton.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopButton.classList.remove('opacity-100', 'visible');
+                    backToTopButton.classList.add('opacity-0', 'invisible');
+                }
+            };
+            window.addEventListener('scroll', toggleBackToTop);
+            toggleBackToTop(); // Call on load
+            
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // --- Mobile Navigation Toggle ---
+            mobileNavToggle.addEventListener('click', () => {
+                document.body.classList.add('mobile-nav-active');
+            });
+
+            mobileNavClose.addEventListener('click', () => {
+                document.body.classList.remove('mobile-nav-active');
+            });
+
+            mobileNavOverlay.addEventListener('click', () => {
+                document.body.classList.remove('mobile-nav-active');
+            });
+
+            // Handle mobile dropdowns (toggle on click)
+            const mobileDropdownToggles = mobileNav.querySelectorAll('.dropdown > a, .deep-dropdown > a');
+            mobileDropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    // Prevent default link navigation if it's a dropdown toggle
+                    // Check if it's a link to a page (e.g., about.html) or just a dropdown trigger
+                    if (toggle.getAttribute('href') === "#" || toggle.querySelector('.bx-chevron-down') || toggle.querySelector('.bx-chevron-right')) {
+                         e.preventDefault();
+                    }
+                   
+                    const parentLi = toggle.parentElement;
+                    const dropdownMenu = toggle.nextElementSibling;
+                    
+                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu') || dropdownMenu.classList.contains('deep-dropdown-menu')) {
+                        // Toggle 'hidden' class for menu visibility
+                        dropdownMenu.classList.toggle('hidden');
+                        // Toggle 'dropdown-active' class on parent <li> for arrow rotation
+                        parentLi.classList.toggle('dropdown-active');
+                    }
+                });
+            });
+
+
+            // --- Portfolio Filtering ---
+            if (portfolioFilters) {
+                portfolioFilters.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON') {
+                        // Remove active class from all filters
+                        portfolioFilters.querySelectorAll('button').forEach(btn => {
+                            btn.classList.remove('filter-active', 'bg-green-600', 'text-white', 'border-green-600');
+                            btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+                        });
+
+                        // Add active class to clicked filter
+                        e.target.classList.add('filter-active', 'bg-green-600', 'text-white', 'border-green-600');
+                        e.target.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+                        const filterValue = e.target.getAttribute('data-filter');
+
+                        portfolioItems.forEach(item => {
+                            if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
+                                item.classList.remove('hidden');
+                            } else {
+                                item.classList.add('hidden');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

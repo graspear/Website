@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company - Contact</title>
+    <link rel="icon" href="https://placehold.co/32x32/cccccc/ffffff?text=C" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container-fluid {
+            width:100%;
+        }
+
+        .map-section iframe {
+            width: 100%;
+            height: 450px;
+            border: 0;
+            border-radius: 0.5rem;
+        }
+
+        .view-larger-map {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #4A5568;
+            text-decoration: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.2s ease-in-out;
+            z-index: 10;
+        }
+
+        .view-larger-map:hover {
+            background-color: #f7fafc;
+        }
+
+        .dropdown-toggle .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-toggle:hover .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 640px) {
+            .navbar-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .navbar-menu li {
+                margin-left: 0;
+                margin-bottom: 0.5rem;
+            }
+            .navbar-social {
+                margin-top: 1rem;
+                justify-content: flex-start;
+            }
+            .contact-form-layout {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .form-row input {
+                margin-bottom: 1rem;
+            }
+            .send-message-btn {
+                width: 100%;
+            }
+        }
+        :root {
+            --primary-color: #1bbd36;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --dark-color: #222;
+            --light-color: #fff;
+            --gray-color: #f5f5f5;
+            --font-primary: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu-deep {
+            display: block;
+        }
+
+        .dropdown-menu-deep {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.375rem;
+            margin-left: 0.5rem;
+            min-width: 12rem;
+            z-index: 20;
+        }
+
+        .about {
+            margin: 10px;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        .about .row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            font-size: 20px;
+            align-items: flex-start;
+        }
+
+        .about .col-left {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 20px;
+            padding-left: 0;
+        }
+
+        .about .col-right {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-left: 20px;
+            padding-right: 0;
+        }
+
+        .about .col-right img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .about .content h3 {
+            font-weight: 600;
+            font-size: 46px;
+        }
+
+        .section-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .divider {
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 0 auto 20px;
+        }
+
+        .section-description {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .clients-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .client-item {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        .client-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .skills-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .skill-item {
+            text-align: left;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .skill-percent {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--gray-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 5px;
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        .animate .progress-fill {
+            width: var(--progress-width);
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .clients-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .about .col-left,
+            .about .col-right {
+                flex: 0 0 100%;
+                max-width: 100%;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .about .col-left {
+                margin-bottom: 20px;
+            }
+
+            .about .content h3 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <header class="bg-white py-4 px-6 md:px-12 shadow-sm flex justify-between items-center flex-wrap">
+        <div class="text-2xl font-bold text-gray-800">COMPANY.</div>
+        <nav class="hidden md:flex flex-grow justify-center gap-x-8">
+            <a href="home.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">HOME</a>
+            <div class="relative group">
+                <a href="#" class="text-green-600 font-semibold text-sm transition duration-300 flex items-center">
+                    ABOUT <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                </a>
+                <div class="hidden group-hover:block absolute bg-white shadow-lg rounded-md mt-2 w-40 z-10">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Team</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Testimonials</a>
+                    <div class="relative group dropdown-submenu">
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md flex justify-between items-center">
+                            Deep Dropdown <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                        </a>
+                        <div class="dropdown-menu-deep">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Deep Dropdown 1</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Deep Dropdown 2</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Deep Dropdown 3</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Deep Dropdown 4</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Deep Dropdown 5</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="Services.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">SERVICES</a>
+            <a href="Portfolio.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">PORTFOLIO</a>
+            <a href="Pricing.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">PRICING</a>
+            <a href="Blog.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">BLOG</a>
+            <a href="Contact.html" class="text-gray-600 hover:text-green-600 font-semibold text-sm transition duration-300">CONTACT</a>
+        </nav>
+        <div class="hidden md:flex items-center space-x-4 ml-auto">
+            <a href="#" class="text-gray-500 hover:text-gray-700 transition duration-300"><i class="fab fa-twitter text-lg"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700 transition duration-300"><i class="fab fa-facebook-f text-lg"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700 transition duration-300"><i class="fab fa-instagram text-lg"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700 transition duration-300"><i class="fab fa-linkedin-in text-lg"></i></a>
+        </div>
+        <button class="md:hidden text-gray-600 text-xl focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <section class="bg-green-600 text-white py-4 px-6 md:px-12 flex justify-between items-center">
+        <h2 class="text-xl font-semibold">Contact</h2>
+        <div class="text-sm">
+            <a href="home.html" class="text-white hover:underline">Home</a>
+            <span class="mx-2">/</span>
+            <span class="font-semibold">Contact</span>
+        </div>
+    </section>
+
+    <section class="map-section relative py-0">
+        <div class="container-fluid">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.161474268925!2d-74.0084360845945!3d40.71071497933182!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a25e1a3d937%3A0xc3b83b3d1b8e4e7a!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sin!4v1678912345678!5m2!1sen!2sin&key=YOUR_Maps_API_KEY"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                class="rounded-md"
+            ></iframe>
+            <a href="https://www.google.com/maps/place/Downtown+Conference+Center" target="_blank" class="view-larger-map">
+                View larger map
+            </a>
+        </div>
+    </section>
+
+    <section class="bg-gray-50 py-20">
+        <div class="container mx-auto px-4 flex flex-wrap justify-between items-start contact-form-layout">
+            <div class="w-full md:w-1/3 mb-10 md:mb-0">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-6 rounded-md">Get in touch</h2>
+                <p class="text-gray-600 leading-relaxed rounded-md">Et id eius voluptates atque nihil voluptatem enim in tempore minima sit ad mollitia.</p>
+            </div>
+            <form action="#" method="POST" class="w-full md:w-2/3 md:pl-10">
+                <div class="flex flex-col md:flex-row gap-6 mb-6 form-row">
+                    <input type="text" placeholder="Your Name" class="flex-1 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out" required>
+                    <input type="email" placeholder="Your Email" class="flex-1 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out" required>
+                </div>
+                <div class="mb-6">
+                    <input type="text" placeholder="Subject" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out" required>
+                </div>
+                <div class="mb-8">
+                    <textarea placeholder="Your Message" rows="6" class="w-full p-4 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out" required></textarea>
+                </div>
+                <button type="submit" class="send-message-btn bg-green-500 text-white py-4 px-10 rounded-lg text-lg font-bold uppercase tracking-wide shadow-md hover:bg-green-600 transition duration-300 ease-in-out transform hover:scale-105">
+                    SEND MESSAGE
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 px-6 md:px-12 relative">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 border-b border-gray-700">
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Company</h3>
+                <address class="not-italic text-sm leading-relaxed">
+                    Au08 Adam Street<br>
+                    New York, NY 535022<br><br>
+                    <strong>Phone:</strong> +1 5589 55488 55<br>
+                    <strong>Email:</strong> info@example.com<br>
+                </address>
+                <div class="flex space-x-4 mt-6">
+                    <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-600 transition-colors duration-300 text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-600 transition-colors duration-300 text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-600 transition-colors duration-300 text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-600 transition-colors duration-300 text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Useful Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Home</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> About us</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Services</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Terms of service</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Privacy policy</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Our Services</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Web Design</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Web Development</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Product Management</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Marketing</a></li>
+                    <li><a href="#" class="hover:text-green-600 transition-colors duration-300 flex items-center"><i class="fas fa-chevron-right text-green-600 text-xs mr-2"></i> Graphic Design</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Our Newsletter</h3>
+                <p class="text-sm mb-4">Subscribe to our newsletter and receive the latest news about our products and services!</p>
+                <form class="flex">
+                    <input type="email" placeholder="Enter your email" class="flex-grow p-3 rounded-l-md bg-gray-800 border border-gray-700 focus:outline-none focus:border-green-600 text-white text-sm">
+                    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-r-md hover:bg-green-700 transition-colors duration-300 text-sm">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container mx-auto text-center pt-8 text-sm text-gray-500">
+            <div class="mb-2">© Copyright <strong>Company</strong>. All Rights Reserved</div>
+            <div>Designed by <a href="https://bootstrapmade.com/" class="text-green-600 hover:underline">Home</a> Distributed by <a href="https://themewagon.com/" class="text-green-600 hover:underline">Company-Home</a></div>
+        </div>
+
+        <a href="#" class="fixed bottom-6 right-6 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300 z-50">
+            <i class="fas fa-arrow-up text-lg"></i>
+        </a>
+    </footer>
+</body>
+</html>
